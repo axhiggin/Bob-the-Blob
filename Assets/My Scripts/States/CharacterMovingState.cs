@@ -9,7 +9,6 @@ public class CharacterMovingState : CharacterBaseState
     private bool buffer;
     public override void EnterState(CharacterStateManager character)
     {
-        Debug.Log("MOVE");
         buffer = true;
     }
 
@@ -29,24 +28,18 @@ public class CharacterMovingState : CharacterBaseState
         // Get the input values for horizontal and vertical axes
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+        Vector3 inputDirection = new Vector3(horizontal, 0f, vertical).normalized;
 
         // Get the camera's forward and right vectors
-        Vector3 forward = Camera.main.transform.forward;
-        Vector3 right = Camera.main.transform.right;
+        inputDirection = Camera.main.transform.TransformDirection(inputDirection);
+        inputDirection.y = 0;
 
-        // Make sure to disregard the y component to keep the movement in the x-z plane
-        forward.y = 0f;
-        right.y = 0f;
+        character.rb.AddForce(inputDirection * character.speed, ForceMode.Acceleration);
 
-        // Normalize the vectors to ensure consistent speed in all directions
-        forward.Normalize();
-        right.Normalize();
-
-        // Calculate the desired movement direction based on input and camera orientation
-        Vector3 desiredMoveDirection = forward * vertical + right * horizontal;
-
-        // Apply the movement to the player's position
-        character.rb.AddForce(desiredMoveDirection, ForceMode.Force);
+        Vector3 clampedVelocity = character.rb.velocity;
+        clampedVelocity.x = Mathf.Clamp(clampedVelocity.x, -character.maxSpeed, character.maxSpeed);
+        clampedVelocity.z = Mathf.Clamp(clampedVelocity.z, -character.maxSpeed, character.maxSpeed);
+        character.rb.velocity = clampedVelocity;
     }
 
     private void Jump(CharacterStateManager character)

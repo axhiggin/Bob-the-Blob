@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class CharacterStateManager : MonoBehaviour
 {
-    
+    //for movement
+    [SerializeField] public float speed = 5f;
+    [SerializeField] public float maxSpeed = 6f;
+    [SerializeField] public float rotationSpeed = 1.0f;
+
     public Rigidbody rb;
-    public Collider col;
+    private Collider col;
+    public Camera cam;
 
     //ground checking
     private float groundDist;
@@ -19,6 +24,7 @@ public class CharacterStateManager : MonoBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         //get components from the scene
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
@@ -52,4 +58,5 @@ public class CharacterStateManager : MonoBehaviour
         return Physics.Raycast(transform.position, -Vector3.up, groundDist);
 
     }
+
 }

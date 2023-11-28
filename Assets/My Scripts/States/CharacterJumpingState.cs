@@ -7,8 +7,6 @@ public class CharacterJumpingState : CharacterBaseState
     public override void EnterState(CharacterStateManager character)
     {
         //play jumping animation
-        Debug.Log("JUMP");
-        Debug.Log(character.isGrounded());
 
     }
 
