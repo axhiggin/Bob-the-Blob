@@ -40,6 +40,7 @@ public class CharacterMovingState : CharacterBaseState
         clampedVelocity.x = Mathf.Clamp(clampedVelocity.x, -character.maxSpeed, character.maxSpeed);
         clampedVelocity.z = Mathf.Clamp(clampedVelocity.z, -character.maxSpeed, character.maxSpeed);
         character.rb.velocity = clampedVelocity;
+
     }
 
     private void Jump(CharacterStateManager character)
